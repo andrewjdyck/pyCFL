@@ -1,11 +1,11 @@
 
 import urllib.request, json, re
+import pyCFL.config as cfg
 
 class cflAPI(object):
-
     def __init__(self):
         self.base_url = 'http://api.cfl.ca/v1'
-        print('cflAPI initiated')
+        self._set_api_key()
 
     def _get_games_data(self):
         api_url = self.base_url
@@ -13,8 +13,9 @@ class cflAPI(object):
             data = json.loads(url.read().decode())
         return(data)
 
-    def _set_api_key(self, api_key):
-        self.api_key = api_key
+    def _set_api_key(self):
+        self.api_key = cfg.Settings().api_key
+        print('api key is: {}'.format(self.api_key))
 
     def _build_url(self, url):
         try:
