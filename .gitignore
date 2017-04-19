@@ -92,4 +92,4 @@ ENV/
 .idea/
 
 # config
-pyCFL/config.json
+*config.json
