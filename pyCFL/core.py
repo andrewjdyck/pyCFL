@@ -7,9 +7,18 @@ class cflAPI(object):
         self.base_url = 'http://api.cfl.ca/v1'
         self._set_api_key()
 
-    def _get_games_data(self):
-        api_url = self.base_url
-        with urllib.request.urlopen(api_url) as url:
+    def _get_games_data(self, season, game_id=None):
+        if game_id:
+            api_url = self.base_url + '/games/' + str(season) + '/game/' + str(game_id)
+        else:
+            api_url = self.base_url + '/games/' + str(season)
+        with urllib.request.urlopen(self._build_url(api_url)) as url:
+            data = json.loads(url.read().decode())
+        return(data)
+
+    def _get_play_by_play(self, season, game_id):
+        api_url = self.base_url + '/games/' + str(season) + '/game/' + str(game_id) + '?include=play_by_play'
+        with urllib.request.urlopen(self._build_url(api_url)) as url:
             data = json.loads(url.read().decode())
         return(data)
 
@@ -25,3 +34,4 @@ class cflAPI(object):
                 url = url + '?key=' + self.api_key
         except:
             print("API must be set first using _set_api_key('YOUR_API_KEY')")
+        return(url)
